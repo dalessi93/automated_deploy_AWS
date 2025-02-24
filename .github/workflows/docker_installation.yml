@@ -20,7 +20,7 @@ jobs:
 
     - name: Install Docker and Docker Compose on EC2
       run: |
-        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_IP_ADDRESS }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP_ADDRESS }} << 'EOF'
           sudo apt update
           sudo apt install -y docker.io
           sudo systemctl start docker
