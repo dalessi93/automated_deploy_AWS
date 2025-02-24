@@ -30,11 +30,8 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP_ADDRESS }} << 'EOF'
 
-          # Navigate to the traefik folder and start the containers
-          cd ~/docker/traefik
+          # Start the containers
+          cd ~/docker
           docker-compose up -d
 
-          # Navigate to the php folder and start the containers
-          cd ~/docker/php
-          docker-compose up -d
         EOF
