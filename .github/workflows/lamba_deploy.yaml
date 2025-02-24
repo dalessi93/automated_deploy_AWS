@@ -12,13 +12,13 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Deploy to lambda
-      uses: appleboy/lambda-action@v0.2.0
+      uses: appleboy/lambda-action@v0.2.0 # This action will not create a Lambda from scratch but will update a Lambda that has already been created.
       with:
         aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws_region: ${{ secrets.AWS_DEFAULT_REGION }}
         aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
-        function_name: dns_update_function_daniel
+        function_name: dns_update_function_daniel # Name of the existing Lambda function you want to update.
         source: src/main.py
         memory_size: 128
         timeout: 300
