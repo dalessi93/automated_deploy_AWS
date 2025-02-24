@@ -28,11 +28,11 @@ jobs:
 
           # Copy traefik docker-compose.yml to EC2
           echo "Copying Traefik docker-compose.yml..."
-          scp -o StrictHostKeyChecking=no ~/docker/traefik/docker-compose.yml ubuntu@${{ secrets.EC2_IP_ADDRESS }}:~/docker/traefik/docker-compose.yml
+          scp -o StrictHostKeyChecking=no ./docker/traefik/docker-compose.yml ubuntu@${{ secrets.EC2_IP_ADDRESS }}:~/docker/traefik/docker-compose.yml
 
           # Copy php docker-compose.yml to EC2
           echo "Copying PHP docker-compose.yml..."
-          scp -o StrictHostKeyChecking=no ~/docker/php/docker-compose.yml ubuntu@${{ secrets.EC2_IP_ADDRESS }}:~/docker/php/docker-compose.yml
+          scp -o StrictHostKeyChecking=no ./docker/php/docker-compose.yml ubuntu@${{ secrets.EC2_IP_ADDRESS }}:~/docker/php/docker-compose.yml
 
           # Navigate to the traefik folder and start the containers
           cd ~/docker/traefik
