@@ -19,7 +19,7 @@ jobs:
         aws_region: ${{ secrets.AWS_DEFAULT_REGION }}
         aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
         function_name: dns_update_function_daniel # Name of the existing Lambda function you want to update.
-        source: src/main.py
+        source: src/lambda_function.py
         memory_size: 128
         timeout: 300
         role: arn:aws:iam::248189943700:role/ec2_dns_automation
