@@ -1,0 +1,44 @@
+name: Set up Traefik and PHP container on EC2
+
+on:
+  workflow_run:
+    workflows: [ "Install Docker and Docker Compose on EC2" ]
+    types:
+    - completed
+
+jobs:
+  setup_traefik_php:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+    - name: Upload and deploy Traefik and PHP containers to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_IP_ADDRESS }} << 'EOF'
+          # Create directories to store docker-compose files on the EC2 instance
+          mkdir -p ~/docker/traefik
+          mkdir -p ~/docker/php
+
+          # Copy traefik docker-compose.yml to EC2
+          echo "Copying Traefik docker-compose.yml..."
+          scp -o StrictHostKeyChecking=no ./docker/traefik/docker-compose.yml ubuntu@${{ secrets.EC2_IP_ADDRESS }}:~/docker/traefik/docker-compose.yml
+
+          # Copy php docker-compose.yml to EC2
+          echo "Copying PHP docker-compose.yml..."
+          scp -o StrictHostKeyChecking=no ./docker/php/docker-compose.yml ubuntu@${{ secrets.EC2_IP_ADDRESS }}:~/docker/php/docker-compose.yml
+
+          # Navigate to the traefik folder and start the containers
+          cd ~/docker/traefik
+          docker-compose up -d
+
+          # Navigate to the php folder and start the containers
+          cd ~/docker/php
+          docker-compose up -d
+        EOF

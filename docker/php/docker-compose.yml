@@ -1,0 +1,9 @@
+version: '3'
+services:
+  hello-world:
+    image: php:7.4-apache
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.helloworld.rule=Host(`nombre1.campusdual.mkcampus.com`)"
+      - "traefik.http.routers.helloworld.entrypoints=websecure"
+      - "traefik.http.routers.helloworld.tls.certresolver=myresolver"
