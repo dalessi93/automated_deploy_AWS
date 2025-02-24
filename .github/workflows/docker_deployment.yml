@@ -19,20 +19,16 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
+    - name: Copying docker-compose to EC2
+      run: |
+        
+        # Copy traefik docker-compose.yml to EC2
+        echo "Copying Traefik docker-compose.yml..."
+        scp -r -o StrictHostKeyChecking=no ./docker ubuntu@${{ secrets.EC2_IP_ADDRESS }}:~
+
     - name: Upload and deploy Traefik and PHP containers to EC2
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP_ADDRESS }} << 'EOF'
-          # Create directories to store docker-compose files on the EC2 instance
-          mkdir -p ~/docker/traefik
-          mkdir -p ~/docker/php
-
-          # Copy traefik docker-compose.yml to EC2
-          echo "Copying Traefik docker-compose.yml..."
-          scp -o StrictHostKeyChecking=no ./docker/traefik/docker-compose.yml ubuntu@${{ secrets.EC2_IP_ADDRESS }}:~/docker/traefik/docker-compose.yml
-
-          # Copy php docker-compose.yml to EC2
-          echo "Copying PHP docker-compose.yml..."
-          scp -o StrictHostKeyChecking=no ./docker/php/docker-compose.yml ubuntu@${{ secrets.EC2_IP_ADDRESS }}:~/docker/php/docker-compose.yml
 
           # Navigate to the traefik folder and start the containers
           cd ~/docker/traefik
